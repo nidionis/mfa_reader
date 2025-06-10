@@ -9,7 +9,6 @@ SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 #Object
 OBJS		= $(addprefix ${OBJS_DIR}, ${SRC:.c=.o})
 
-
 INCLUDES	= includes
 NAME		= retromfa
 RM			= rm -f

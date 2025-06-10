@@ -39,13 +39,8 @@
 #define JPEG_FOOTER "\xFF\xD9"
 #define JPEG_FOOTER_SIZE 2
 
-
-int main(int argc, char **argv)
-{
-    if (argc != 2) {
-        printf("Usage: %s <file.mfa>\n", argv[0]);
-        return 1;
-    }
+int main_ben(int argc, char **argv) {
+    (void)argc;
     FILE *file = fopen(argv[1], "rb");
     if (!file) {
         perror("Error opening file");
@@ -63,10 +58,10 @@ int main(int argc, char **argv)
     fread(data, 1, filesize, file);
     fclose(file);
 
-    // Cherche le header PNG
+// Cherche le header PNG
     for (long i = 0; i < filesize - PNG_HEADER_SIZE; ++i) {
         if (memcmp(data + i, PNG_HEADER, PNG_HEADER_SIZE) == 0) {
-            // Trouvé ! Cherche la fin du PNG (IEND chunk)
+// Trouvé ! Cherche la fin du PNG (IEND chunk)
             for (long j = i + PNG_HEADER_SIZE; j < filesize - 8; ++j) {
                 if (memcmp(data + j, "IEND", 4) == 0) {
                     long end = j + 8; // IEND chunk + CRC
@@ -82,9 +77,9 @@ int main(int argc, char **argv)
             }
         }
     }
-	for (long i = 0; i < filesize - JPEG_HEADER_SIZE; ++i) {
+    for (long i = 0; i < filesize - JPEG_HEADER_SIZE; ++i) {
         if (memcmp(data + i, JPEG_HEADER, JPEG_HEADER_SIZE) == 0) {
-            // Trouvé ! Cherche la fin du JPEG
+// Trouvé ! Cherche la fin du JPEG
             for (long j = i + JPEG_HEADER_SIZE; j < filesize - JPEG_FOOTER_SIZE; ++j) {
                 if (memcmp(data + j, JPEG_FOOTER, JPEG_FOOTER_SIZE) == 0) {
                     long end = j + JPEG_FOOTER_SIZE;
@@ -102,5 +97,15 @@ int main(int argc, char **argv)
     }
     printf("Aucune image PNG trouvée dans le fichier.\n");
     free(data);
+    return (0);
+}
+
+int main(int argc, char **argv)
+{
+    if (argc != 2) {
+        printf("Usage: %s <file.mfa>\n", argv[0]);
+        return 1;
+    }
+    main_ben(argc, argv);
     return 1;
 }
