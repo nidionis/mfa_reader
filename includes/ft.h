@@ -15,6 +15,10 @@
 #ifndef FT_H
 # define FT_H
 
-# include <
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int	get_rgba(int t, int r, int g, int b);
 
 #endif

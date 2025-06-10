@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ft.h"
+#include "ft.h"
 
 // int	main(int argc, char **argv)
 // {
@@ -27,10 +27,6 @@
 // 	ft_process_input(argv[1]);
 // 	return (0);
 // }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define PNG_HEADER "\x89PNG\r\n\x1a\n"
 #define PNG_HEADER_SIZE 8
@@ -106,6 +102,6 @@ int main(int argc, char **argv)
         printf("Usage: %s <file.mfa>\n", argv[0]);
         return 1;
     }
-    main_ben(argc, argv);
+    get_rgba(0,0,0,0);
     return 1;
 }
