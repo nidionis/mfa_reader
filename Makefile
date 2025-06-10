@@ -1,22 +1,19 @@
 OBJS_DIR	= objects/
+SRCS_DIR 	= srcs/
+LIBMLX		= MLX42/
 
 #Sources
-SRCS_DIR	= srcs/
-SRC			= main.cpp \
-			  Serialize.cpp \
-			  Data.cpp
-
+SRC			= main.c
 SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 
 #Object
-OBJS		= $(addprefix ${OBJS_DIR}, ${SRC:.cpp=.o})
+OBJS		= $(addprefix ${OBJS_DIR}, ${SRC:.c=.o})
 
 
-INCLUDES	= includes/
-NAME		= Serialization
+INCLUDES	= includes
+NAME		= retromfa
 RM			= rm -f
-CFLAGS		= -Wall -Wextra -Werror -I${INCLUDES}
-CC			= cc
+CFLAGS		= -Wall -Wextra -Werror -I ${INCLUDES} -O3
 
 #Colors
 LIGHT_GRAY	= \033[2m
@@ -39,14 +36,17 @@ CROSS		= \033[9m
 FLASH		= \033[5m
 NEGATIF		= \033[7m
 
-all:			${NAME}
+all:			${LIBMLX} libmlx ${NAME}
 
-${OBJS_DIR}%.o: ${SRCS_DIR}%.cpp | ${OBJS_DIR}
-				@${CC} ${CFLAGS} -c $< -o $@
+${OBJS_DIR}%.o: ${SRCS_DIR}%.c | ${OBJS_DIR}
+				@cc ${CFLAGS} -c $< -o $@
 
 ${NAME}:		${OBJS}
-				@${CC} ${CFLAGS} ${OBJS} -o $@ 
+				@${CC} ${CFLAGS} ${OBJS} -L${LIBMLX}/build -lmlx42 -ldl -lglfw -pthread -lm -o $@ 
 				@echo "${YELLOW}'$@' is compiled ! ✅${RESET}"
+
+libmlx:
+				@cmake ${LIBMLX} -B ${LIBMLX}/build && make -sC ${LIBMLX}/build -j4
 
 ${OBJS_DIR}:
 				@mkdir -p ${OBJS_DIR}
@@ -54,12 +54,20 @@ ${OBJS_DIR}:
 clean:
 				@${RM} ${OBJS}
 				@${RM} -r ${OBJS_DIR}
+				@make clean -sC ${LIBFT}
 				@echo "${RED}'${NAME}' objects are deleted ! 👍${RESET}"
 
 fclean:			clean
-				@${RM} ${NAME}
-				@echo "${RED}'${NAME}' is deleted ! 👍${RESET}"
+				@${RM} ${NAME} ${LIBFT}libft.a
+				@echo "${RED}'${NAME}' and 'libft.a' are deleted ! 👍${RESET}"
 
 re:				fclean all
 
-.PHONY:			all clean fclean re
+bonus:			all
+
+${LIBMLX}:
+				@echo "${CYAN}${ITALIC}Cloning of MLX42 Codam...${RESET}"
+				@git clone https://github.com/codam-coding-college/MLX42.git $@
+				@echo "${CYAN}Clonne is ready !!!${RESET}"
+
+.PHONY:			all clean fclean re libmlx bonus
