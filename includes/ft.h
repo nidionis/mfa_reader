@@ -27,7 +27,18 @@ typedef struct s_data {
     void    *orgin;
 } t_data;
 
+typedef struct {
+    const char *name;
+    const unsigned char *signature;
+    size_t signature_length;
+} FileHeader;
+
+extern const FileHeader headers_[];
+extern const int HEADERS_COUNT;
+
 int	get_rgba(int t, int r, int g, int b);
 int load_file(t_data *data, char *path);
+int is_header(unsigned char *data, size_t pos, const FileHeader *header);
+const FileHeader* find_header(unsigned char *data, size_t data_size);
 
 #endif

@@ -98,6 +98,14 @@ int main_ben(int argc, char **argv) {
     return (0);
 }
 
+const FileHeader headers_[] = {
+        {"PNG", (unsigned char*)"\x89PNG\r\n\x1a\n", 8},
+        {"JPEG", (unsigned char*)"\xFF\xD8\xFF", 3},
+        {"GIF", (unsigned char*)"GIF87a", 6},
+};
+
+const int HEADERS_COUNT = sizeof(headers_) / sizeof(headers_[0]);
+
 int main(int argc, char **argv)
 {
     t_data data;
@@ -107,11 +115,19 @@ int main(int argc, char **argv)
         return 1;
     }
     load_file(&data, argv[1]);
-    for (size_t pos = 0; pos < data.size; pos += OFFSET) {
-        if (memcmp(data.bin + pos, "MFA ", 4) == 0) {
-            printf("MFA found at %zu\n", (void *)pos - data.orgin);
-        }
-        //fseek(data.bin, pos, SEEK_SET);
+
+    const FileHeader *found = find_header(data.bin, data.size);
+    if (found) {
+        printf("Found header: %s\n", found->name);
+    } else {
+        printf("No known header found\n");
     }
+
+//    for (size_t pos = 0; pos < data.size; pos += OFFSET) {
+//        if (memcmp(data.bin + pos, "MFA ", 4) == 0) {
+//            printf("MFA found at %zu\n", (void *)pos - data.orgin);
+//        }
+//        //fseek(data.bin, pos, SEEK_SET);
+//    }
     return 1;
 }
