@@ -3,7 +3,7 @@ SRCS_DIR 	= srcs/
 LIBMLX		= MLX42/
 
 #Sources
-SRC			= main.c colors_encoding.c data.c
+SRC			= main2.c colors_encoding.c data.c
 SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 
 #Object
@@ -12,7 +12,7 @@ OBJS		= $(addprefix ${OBJS_DIR}, ${SRC:.c=.o})
 INCLUDES	= includes
 NAME		= retromfa
 RM			= rm -f
-CFLAGS		= -Wall -Wextra -Werror -I ${INCLUDES} -O3 -g
+CFLAGS		= -Wall -Wextra -Werror -I ${INCLUDES} -O3 -g3
 
 #Colors
 LIGHT_GRAY	= \033[2m
