@@ -3,7 +3,7 @@ SRCS_DIR 	= srcs/
 LIBMLX		= MLX42/
 
 #Sources
-SRC			= main.c colors_encoding.c
+SRC			= main.c colors_encoding.c data.c
 SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 
 #Object
@@ -12,7 +12,7 @@ OBJS		= $(addprefix ${OBJS_DIR}, ${SRC:.c=.o})
 INCLUDES	= includes
 NAME		= retromfa
 RM			= rm -f
-CFLAGS		= -Wall -Wextra -Werror -I ${INCLUDES} -O3
+CFLAGS		= -Wall -Wextra -Werror -I ${INCLUDES} -O3 -g
 
 #Colors
 LIGHT_GRAY	= \033[2m
@@ -53,7 +53,7 @@ ${OBJS_DIR}:
 clean:
 				@${RM} ${OBJS}
 				@${RM} -r ${OBJS_DIR}
-				@make clean -sC ${LIBFT}
+				#@make -C clean ${LIBFT}
 				@echo "${RED}'${NAME}' objects are deleted ! 👍${RESET}"
 
 fclean:			clean

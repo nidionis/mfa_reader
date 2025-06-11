@@ -19,11 +19,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define ERROR -1
+
 typedef struct s_data {
     size_t  size;
-    FILE    *bin;
+    void    *bin;
+    void    *orgin;
 } t_data;
 
 int	get_rgba(int t, int r, int g, int b);
+int load_file(t_data *data, char *path);
 
 #endif
