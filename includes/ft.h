@@ -20,6 +20,7 @@
 #include <string.h>
 
 #define ERROR -1
+#define EXTENTION_AVAILABLE ".mfa"
 
 typedef struct s_data {
     size_t  size;

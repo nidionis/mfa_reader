@@ -56,10 +56,8 @@ int main_ben(int argc, char **argv) {
     fread(data, 1, filesize, file);
     fclose(file);
 
-// Cherche le header PNG
     for (long i = 0; i < filesize - PNG_HEADER_SIZE; ++i) {
         if (memcmp(data + i, PNG_HEADER, PNG_HEADER_SIZE) == 0) {
-// Trouvé ! Cherche la fin du PNG (IEND chunk)
             for (long j = i + PNG_HEADER_SIZE; j < filesize - 8; ++j) {
                 if (memcmp(data + j, "IEND", 4) == 0) {
                     long end = j + 8; // IEND chunk + CRC

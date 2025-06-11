@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../MLX42/include/MLX42/MLX42.h"
+#include <ft.h>
 
 typedef struct s_image
 {
@@ -40,8 +41,29 @@ typedef struct s_viewer_ctx
 #define SCALE_5_TO_8(x) ((x) * 255 / 31)
 #define MAX_IMAGES 1000
 
+int is_extention_ok(const char *filepath, const char *extention) {
+    if (!filepath) {
+        perror("[is_extention_ok] filepath is null]");
+        return -1;
+    }
+    if (!extention) {
+        perror("warning: [is_extention_ok] accepting any extention");
+    }
+    char *ext = strstr(filepath, extention);
+    if (ext) {
+        if (ext == filepath + strlen(filepath) - strlen(extention)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int	extract_images(const char *filepath, t_image *images, int max_images)
 {
+    if (!is_extention_ok(filepath, EXTENTION_AVAILABLE)) {
+        perror("extention non valide");
+        return -1;
+    }
     FILE *f = fopen(filepath, "rb");
     if (!f) {
         perror("Erreur ouverture fichier");
