@@ -19,6 +19,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct s_data {
+    size_t  size;
+    FILE    *bin;
+} t_data;
+
 int	get_rgba(int t, int r, int g, int b);
 
 #endif

@@ -35,6 +35,21 @@
 #define JPEG_FOOTER "\xFF\xD9"
 #define JPEG_FOOTER_SIZE 2
 
+#define ERROR -1
+
+int load_file(t_data *data, char *path) {
+    FILE *file = fopen(path, "rb");
+    if (!file) {
+        perror("Error opening file");
+        return ERROR;
+    }
+    fseek(file, 0, SEEK_END);
+    data->size = ftell(file);
+    rewind(file);
+    data->bin = file;
+    return 0;
+}
+
 int main_ben(int argc, char **argv) {
     (void)argc;
     FILE *file = fopen(argv[1], "rb");
@@ -98,10 +113,12 @@ int main_ben(int argc, char **argv) {
 
 int main(int argc, char **argv)
 {
+    t_data data;
     if (argc != 2) {
         printf("Usage: %s <file.mfa>\n", argv[0]);
         return 1;
     }
-    get_rgba(0,0,0,0);
+    load_file(&data, argv[1]);
+    //get_rgba(0,0,0,0);
     return 1;
 }
