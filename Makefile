@@ -3,7 +3,8 @@ SRCS_DIR 	= srcs/
 LIBMLX		= MLX42/
 
 #Sources
-SRC			= main.c colors_encoding.c data.c headers.c main_nico.c
+SRC			= colors_encoding.c  data.c  graphics.c  headers.c  image.c  main.c parsing.c #main_nico.c
+
 SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 
 #Object
