@@ -57,33 +57,52 @@ int is_extention_ok(const char *filepath, const char *extention) {
     }
     return 0;
 }
-
-int	extract_images(const char *filepath, t_image *images, int max_images)
-{
-    if (!is_extention_ok(filepath, EXTENTION_AVAILABLE)) {
-        perror("extention non valide");
-        return -1;
-    }
+static uint8_t* read_file_data(const char *filepath, unsigned long *filesize) {
     FILE *f = fopen(filepath, "rb");
     if (!f) {
-        perror("Erreur ouverture fichier");
-        return -1;
+        perror("Error opening file");
+        return NULL;
     }
 
+    // Determine file size
     fseek(f, 0, SEEK_END);
-    unsigned long filesize = ftell(f);
+    *filesize = ftell(f);
     rewind(f);
 
-    uint8_t *data = malloc(filesize);
-    if (!data)
-	{
-        perror("Erreur allocation mémoire");
+    // Allocate memory for file data
+    uint8_t *data = malloc(*filesize);
+    if (!data) {
+        perror("Memory allocation error");
         fclose(f);
+        return NULL;
+    }
+
+    // Read file content
+    size_t bytes_read = fread(data, 1, *filesize, f);
+    fclose(f);
+
+    if (bytes_read != *filesize) {
+        perror("Error reading file");
+        free(data);
+        return NULL;
+    }
+
+    return data;
+}
+
+int extract_images(const char *filepath, t_image *images, int max_images) {
+    // Validate file extension
+    if (!is_extention_ok(filepath, EXTENTION_AVAILABLE)) {
+        perror("Invalid file extension");
         return -1;
     }
 
-    fread(data, 1, filesize, f);
-    fclose(f);
+    // Read file data
+    unsigned long filesize;
+    uint8_t *data = read_file_data(filepath, &filesize);
+    if (!data) {
+        return -1;
+    }
 
     int count = 0;
 
