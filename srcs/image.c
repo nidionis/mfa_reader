@@ -77,26 +77,20 @@ int extract_24bit_image(uint8_t *data, unsigned long filesize, t_image *images, 
 int extract_16bit_image(uint8_t *data, unsigned long filesize, t_image *images, int count, unsigned long i) {
     uint16_t width  = data[i - 4] | (data[i - 3] << 8);
     uint16_t height = data[i - 2] | (data[i - 1] << 8);
-
     if (width == 0 || height == 0)
         return -1;
-
     size_t pixel_count = width * height;
     size_t pixel_bytes = pixel_count * 2;
     unsigned long pixel_offset = i + 16;
-
     if (pixel_offset + pixel_bytes > filesize)
         return -1;
-
     t_image *img = &images[count];
     if (initialize_image(img, count, width, height) != 0) {
         return -1;
     }
-
     for (size_t p = 0; p < pixel_count; ++p) {
         uint16_t pix = data[pixel_offset + 2*p] | (data[pixel_offset + 2*p + 1] << 8);
         convert_pixel_to_rgb_data(img, p, pix);
     }
-
     return pixel_offset + pixel_bytes - 1;  // Return new index
 }

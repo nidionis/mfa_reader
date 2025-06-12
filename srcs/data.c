@@ -10,7 +10,6 @@ int load_file(t_data *data, char *path) {
         perror("Error opening file");
         return ERROR;
     }
-
     fseek(file, 0, SEEK_END);
     data->size = ftell(file);
     rewind(file);
@@ -20,7 +19,6 @@ int load_file(t_data *data, char *path) {
         fclose(file);
         return ERROR;
     }
-
     size_t read_count = fread(data->bin, 1, data->size, file);
     if (read_count != data->size) {
         perror("File read error");
@@ -28,7 +26,6 @@ int load_file(t_data *data, char *path) {
         fclose(file);
         return ERROR;
     }
-
     data->orgin = data->bin;
     fclose(file);
     return 0;
